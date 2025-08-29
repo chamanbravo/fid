@@ -22,6 +22,7 @@ app = typer.Typer(
     context_settings={
         "help_option_names": ["-h", "--help"],
     },
+    pretty_exceptions_show_locals=False,
 )
 
 
@@ -32,20 +33,6 @@ app = typer.Typer(
 def main(
     prompt: list[str] = typer.Argument(None, help="send a prompt", show_default=False),
     model: bool = typer.Option(False, "-m", "--model", help="Specify model"),
-    version: bool = typer.Option(False, "-v", "--version", help="Show version"),
-    settings: bool = typer.Option(
-        False, "-s", "--settings", help="Open settings in $EDITOR"
-    ),
-    reset_settings: bool = typer.Option(
-        False,
-        "--reset-settings",
-        help=" Backup your old settings file and reset everything to the defaults",
-    ),
-    dirs: bool = typer.Option(
-        False,
-        "--dirs",
-        help="Print the directories in which pal store its data",
-    ),
     role: str = typer.Option(
         None,
         "-r",
@@ -57,13 +44,27 @@ def main(
     list_roles: bool = typer.Option(
         False, "--list-roles", help="List the roles defined in your configuration file"
     ),
+    version: bool = typer.Option(False, "-v", "--version", help="Show version"),
+    dirs: bool = typer.Option(
+        False,
+        "--dirs",
+        help="Print the directories in which pal store its data",
+    ),
+    settings: bool = typer.Option(
+        False, "-s", "--settings", help="Open settings in $EDITOR"
+    ),
+    reset_settings: bool = typer.Option(
+        False,
+        "--reset-settings",
+        help=" Backup your old settings file and reset everything to the defaults",
+    ),
 ):
     if model:
         select_model(config)
     elif version:
         console.print(f"Version: {__version__.__version__}")
     elif reset_settings:
-        config.reset_settings()
+        config.reset_config()
         console.print("Config reset successfully.")
     elif settings:
         editor = os.environ.get("EDITOR", "vim")

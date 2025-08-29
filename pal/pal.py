@@ -1,4 +1,5 @@
-from pydantic_ai import Agent
+import typer
+from pydantic_ai import Agent, UserError
 from rich.console import Console
 from rich.live import Live
 from rich.markdown import Markdown
@@ -13,7 +14,11 @@ class Pal:
         self.system_prompt = system_prompt
 
     def agent(self):
-        return Agent(model=self.model, system_prompt=self.system_prompt)
+        try:
+            return Agent(model=self.model, system_prompt=self.system_prompt)
+        except UserError as e:
+            console.print(f"[red reverse]ERROR:[/red reverse] {e}")
+            raise typer.Exit(1)
 
 
 async def run(prompt: str, agent: Agent):

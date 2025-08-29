@@ -1,8 +1,24 @@
 import sys
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
+
+default_config_str = """\
+# Default model ('openai:chatgpt-4o-latest', 'openai:gpt-3.5-turbo',...)
+default-model: google-gla:gemini-2.0-flash
+# List of predefined system messages that can be used as roles
+roles:
+  "default": []
+  # Example, a role called `shell`:
+  # shell:
+  #   - you are a shell expert
+  #   - you do not explain anything
+  #   - you simply output one liners to solve the problems you're asked
+  #   - you do not provide any explanation whatsoever, ONLY the command
+# System role to use
+role: "default"
+"""
 
 
 @dataclass
@@ -23,7 +39,7 @@ class Config:
     def _load_config(self) -> Configs:
         default_config = Configs()
 
-        if self.config_file.exists() and yaml:
+        if self.config_file.exists():
             try:
                 with open(self.config_file, "r") as f:
                     data: dict[str, str] = yaml.safe_load(f) or {}
@@ -34,23 +50,14 @@ class Config:
             except Exception as e:
                 print(f"Warning: Could not load config: {e}", file=sys.stderr)
         else:
-            self.save_settings(default_config)
+            # write default config file (with comments)
+            self.reset_config()
 
         return default_config
 
-    def save_settings(self, config: Configs):
-        if yaml:
-            try:
-                with open(self.config_file, "w") as f:
-                    yaml.dump(asdict(config), f, default_flow_style=False)
-            except Exception as e:
-                print(f"Warning: Could not save config: {e}", file=sys.stderr)
-
-    def reset_settings(self):
-        default_config = Configs()
-        if yaml:
-            try:
-                with open(self.config_file, "w") as f:
-                    yaml.dump(asdict(default_config), f, default_flow_style=False)
-            except Exception as e:
-                print(f"Warning: Could not save config: {e}", file=sys.stderr)
+    def reset_config(self):
+        try:
+            with open(self.config_file, "w") as f:
+                f.write(default_config_str)  # write the raw string with comments
+        except Exception as e:
+            print(f"Warning: Could not save config: {e}", file=sys.stderr)
