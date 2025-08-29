@@ -1,9 +1,9 @@
 [project]
 name = "fid"
-version = "0.1.0"
+version = "0.1.1"
 description = "Add your description here"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = ["typer", "rich", "pydantic-ai", "readchar"]
 classifiers = [
     "Intended Audience :: Information Technology",
@@ -19,6 +19,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
 ]
+
+[project.scripts]
+fid = "fid.__main__:app"
 
 [project.urls]
 Homepage = "https://github.com/chamanbravo/fid"
