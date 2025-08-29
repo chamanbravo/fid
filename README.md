@@ -1,5 +1,16 @@
 # Fid
 
+<p align="center">
+  <img src="./docs/fid.png" width="300px">
+</p>
+
+<div align="center">
+  <img src="https://badges.ws/pypi/v/fid" alt="Python versions" />
+  <img src="https://badges.ws/pypi/python/fid" alt="Python versions" />
+  <img src="https://badges.ws/pypi/status/fid" alt="PyPI Status" />
+  <img src="https://badges.ws/pypi/l/fid" alt="PyPI Status" />
+</div>
+
 AI for the command line, built for pipelines.
 
 Fid brings Large Language Models (LLMs) directly to your terminal. It can take command output, process it with AI, and return results in formats like Markdown, JSON, or plain text. Think of it as a lightweight way to make your command-line workflows smarter with just a touch of AI.
