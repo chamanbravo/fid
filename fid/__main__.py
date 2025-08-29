@@ -17,7 +17,7 @@ console = Console()
 config = Config()
 
 app = typer.Typer(
-    help="AI fid on the command line. Built for pipelines.",
+    help="AI for the command line. Built for pipelines.",
     add_completion=False,
     context_settings={
         "help_option_names": ["-h", "--help"],
@@ -27,7 +27,7 @@ app = typer.Typer(
 
 
 @app.command(
-    help="AI fid on the command line. Built for pipelines.",
+    help="AI for the command line. Built for pipelines.",
     epilog='\033[36mExample:\033[0m cat README.md | fid -p \033[95m"Fix the grammer"\033[0m',
 )
 def main(

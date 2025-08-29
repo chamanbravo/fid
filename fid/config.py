@@ -11,11 +11,11 @@ default-model: google-gla:gemini-2.0-flash
 roles:
   "default": []
   # Example, a role called `shell`:
-  # shell:
-  #   - you are a shell expert
-  #   - you do not explain anything
-  #   - you simply output one liners to solve the problems you're asked
-  #   - you do not provide any explanation whatsoever, ONLY the command
+  shell:
+    - you are a shell expert
+    - you do not explain anything
+    - you simply output one liners to solve the problems you're asked
+    - you do not provide any explanation whatsoever, ONLY the command
 # System role to use
 role: "default"
 """
@@ -50,7 +50,7 @@ class Config:
             except Exception as e:
                 print(f"Warning: Could not load config: {e}", file=sys.stderr)
         else:
-            # write default config file (with comments)
+            print("add")
             self.reset_config()
 
         return default_config
@@ -58,6 +58,7 @@ class Config:
     def reset_config(self):
         try:
             with open(self.config_file, "w") as f:
-                f.write(default_config_str)  # write the raw string with comments
+                print("here")
+                f.write(default_config_str)
         except Exception as e:
             print(f"Warning: Could not save config: {e}", file=sys.stderr)
