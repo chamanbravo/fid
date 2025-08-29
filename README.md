@@ -5,11 +5,13 @@
 </p>
 
 <div align="center">
-  <img src="https://badges.ws/pypi/v/fid" alt="Python versions" />
-  <img src="https://badges.ws/pypi/python/fid" alt="Python versions" />
-  <img src="https://badges.ws/pypi/status/fid" alt="PyPI Status" />
-  <img src="https://badges.ws/pypi/l/fid" alt="PyPI Status" />
+  <img src="https://badges.ws/pypi/v/fid" />
+  <img src="https://badges.ws/pypi/python/fid" />
+  <img src="https://badges.ws/pypi/status/fid" />
+  <img src="https://badges.ws/pypi/l/fid" />
 </div>
+
+---
 
 AI for the command line, built for pipelines.
 
