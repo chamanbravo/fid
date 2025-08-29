@@ -9,15 +9,15 @@ from rich.prompt import Prompt
 
 from . import __version__
 from .config import Config
+from .fid import Fid, run
 from .models import select_model
-from .pal import Pal, run
 
 console = Console()
 
 config = Config()
 
 app = typer.Typer(
-    help="AI Pal on the command line. Built for pipelines.",
+    help="AI fid on the command line. Built for pipelines.",
     add_completion=False,
     context_settings={
         "help_option_names": ["-h", "--help"],
@@ -27,8 +27,8 @@ app = typer.Typer(
 
 
 @app.command(
-    help="AI Pal on the command line. Built for pipelines.",
-    epilog='\033[36mExample:\033[0m cat README.md | pal -p \033[95m"Fix the grammer"\033[0m',
+    help="AI fid on the command line. Built for pipelines.",
+    epilog='\033[36mExample:\033[0m cat README.md | fid -p \033[95m"Fix the grammer"\033[0m',
 )
 def main(
     prompt: list[str] = typer.Argument(None, help="send a prompt", show_default=False),
@@ -48,7 +48,7 @@ def main(
     dirs: bool = typer.Option(
         False,
         "--dirs",
-        help="Print the directories in which pal store its data",
+        help="Print the directories in which fid store its data",
     ),
     settings: bool = typer.Option(
         False, "-s", "--settings", help="Open settings in $EDITOR"
@@ -90,10 +90,10 @@ def main(
         if stdin_data:
             prompt_str = stdin_data + "\n" + prompt_str
 
-        pal_config = config.config
-        system_prompt = pal_config.roles.get(role, [])
-        pal = Pal(model=pal_config.default_model, system_prompt=system_prompt)
-        agent = pal.agent()
+        fid_config = config.config
+        system_prompt = fid_config.roles.get(role, [])
+        fid = Fid(model=fid_config.default_model, system_prompt=system_prompt)
+        agent = fid.agent()
         asyncio.run(run(prompt_str, agent))
     elif prompt:
         prompt_str = " ".join(prompt)
@@ -104,16 +104,16 @@ def main(
         if stdin_data:
             prompt_str = stdin_data + "\n" + prompt_str
 
-        pal_config = config.config
-        pal = Pal(model=pal_config.default_model)
-        agent = pal.agent()
+        fid_config = config.config
+        fid = Fid(model=fid_config.default_model)
+        agent = fid.agent()
         asyncio.run(run(prompt_str, agent))
     else:
         prompt_input = Prompt.ask("[magenta]Enter a prompt:[/magenta]\n")
-        pal_config = config.config
+        fid_config = config.config
         print()
-        pal = Pal(model=pal_config.default_model)
-        agent = pal.agent()
+        fid = Fid(model=fid_config.default_model)
+        agent = fid.agent()
         asyncio.run(run(prompt_input, agent))
 
 

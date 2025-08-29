@@ -1,5 +1,5 @@
 [project]
-name = "pal"
+name = "fid"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -21,12 +21,12 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/chamanbravo/pal"
-Repository = "https://github.com/chamanbravo/pal"
-Issues = "https://github.com/chamanbravo/pal/issues"
+Homepage = "https://github.com/chamanbravo/fid"
+Repository = "https://github.com/chamanbravo/fid"
+Issues = "https://github.com/chamanbravo/fid/issues"
 
 [tool.ruff]
-src = ["./pal"]
+src = ["./fid"]
 
 [tool.ruff.lint]
 extend-select = ["I"]
@@ -35,5 +35,5 @@ extend-select = ["I"]
 venvPath = "."
 venv = ".venv"
 typeCheckingMode = "strict"
-executionEnvironments = [{ root = "pal" }]
-include = ["pal"]
+executionEnvironments = [{ root = "fid" }]
+include = ["fid"]

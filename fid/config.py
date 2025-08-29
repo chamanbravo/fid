@@ -30,7 +30,7 @@ class Configs:
 
 class Config:
     def __init__(self):
-        self.config_dir = Path.home() / ".config" / "pal"
+        self.config_dir = Path.home() / ".config" / "fid"
         self.config_file = self.config_dir / "config.yaml"
 
         self.config_dir.mkdir(parents=True, exist_ok=True)

@@ -7,7 +7,7 @@ from rich.prompt import Prompt
 from rich.table import Table
 
 from .config import Config
-from .pal import Pal, run
+from .fid import Fid, run
 
 
 def select_model(config: Config):
@@ -48,8 +48,8 @@ def select_model(config: Config):
         config.config.default_model = selected_model
 
         prompt_input = Prompt.ask("\n[magenta]Enter a prompt:[/magenta]\n")
-        pal_config = config.config
-        pal = Pal(model=pal_config.default_model)
-        agent = pal.agent()
+        fid_config = config.config
+        fid = Fid(model=fid_config.default_model)
+        agent = fid.agent()
         print()
         asyncio.run(run(prompt_input, agent))

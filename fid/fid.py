@@ -8,7 +8,7 @@ from rich.spinner import Spinner
 console = Console()
 
 
-class Pal:
+class Fid:
     def __init__(self, model: str, system_prompt: list[str] = []):
         self.model = model
         self.system_prompt = system_prompt
