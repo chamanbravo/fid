@@ -1,3 +1,5 @@
+import random
+
 import typer
 from pydantic_ai import Agent, UserError
 from rich.live import Live
@@ -5,6 +7,7 @@ from rich.markdown import Markdown
 from rich.spinner import Spinner
 
 from . import console
+from .utils import LOADING_MESSAGES
 
 
 class Fid:
@@ -22,7 +25,11 @@ class Fid:
 
     async def run(self, prompt: str):
         with Live(
-            Spinner("dots2", text="[magenta]Thinking...[/magenta]", style="cyan"),
+            Spinner(
+                "dots2",
+                text=f"[magenta]{random.choice(LOADING_MESSAGES)}[/magenta]",
+                style="cyan",
+            ),
             console=console,
             vertical_overflow="ellipsis",
             refresh_per_second=10,
