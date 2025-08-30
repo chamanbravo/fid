@@ -7,26 +7,20 @@ from rich.table import Table
 
 from . import console
 from .fid import Fid
+from .utils import MODELS_OPTIONS
 
 
 def select_model():
-    options = [
-        "google-gla:gemini-2.0-flash",
-        "google-gla:gemini-2.0-flash-lite",
-        "google-gla:gemini-2.5-flash",
-        "google-gla:gemini-2.5-flash-lite",
-        "google-gla:gemini-2.5-pro",
-    ]
     current_index = 0
     selected_model = None
 
     def get_menu_table():
         table = Table(box=None, show_header=False)
-        for i, option in enumerate(options):
+        for i, option in enumerate(MODELS_OPTIONS):
             if i == current_index:
                 table.add_row(f"> [bold green]{option}[/bold green]")
             else:
-                table.add_row(f"  {option}")
+                table.add_row(f"  [gray66]{option}[/gray66]")
         return table
 
     console.print("[magenta]Choose the model:[magenta]")
@@ -34,11 +28,11 @@ def select_model():
         while True:
             key = readchar.readkey()
             if key == readchar.key.UP:
-                current_index = (current_index - 1) % len(options)
+                current_index = (current_index - 1) % len(MODELS_OPTIONS)
             elif key == readchar.key.DOWN:
-                current_index = (current_index + 1) % len(options)
+                current_index = (current_index + 1) % len(MODELS_OPTIONS)
             elif key == readchar.key.ENTER:
-                selected_model = options[current_index]
+                selected_model = MODELS_OPTIONS[current_index]
                 break
             live.update(get_menu_table())
 

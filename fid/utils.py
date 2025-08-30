@@ -19,3 +19,47 @@ LOADING_MESSAGES = [
     "Scribbling on a digital napkin…",
     "Zipping up bits and bytes…",
 ]
+
+MODELS_OPTIONS = [
+    # OpenAI / ChatGPT
+    "gpt-3.5-turbo",
+    "gpt-3.5-turbo-16k",
+    "gpt-4",
+    "gpt-4-32k",
+    "gpt-4-turbo",
+    "gpt-4-vision-preview",
+    "gpt-4o",
+    "gpt-4o-mini",
+    "gpt-5",
+    "gpt-5-mini",
+    # Claude
+    "anthropic:claude-3-5",
+    "anthropic:claude-3-7",
+    "anthropic:claude-4",
+    "claude-3-5-haiku-latest",
+    "claude-3-5-sonnet-latest",
+    "claude-3-7-sonnet-latest",
+    "claude-4-sonnet-20250514",
+    # Cohere
+    "cohere:command",
+    "cohere:command-light",
+    "cohere:command-r",
+    "cohere:command-r-plus",
+    # Mistral
+    "mistral:mistral-large-latest",
+    "mistral:codestral-latest",
+    # LLaMA / Meta
+    "meta.llama3-70b-instruct-v1",
+    "meta.llama3-8b-instruct-v1",
+    # Google / Gemini
+    "google-gla:gemini-2.0-flash",
+    "google-gla:gemini-2.0-flash-lite",
+    "google-gla:gemini-2.5-flash",
+    "google-gla:gemini-2.5-flash-lite",
+    "google-gla:gemini-2.5-pro",
+    "google-vertex:gemini-2.5-pro",
+    "google-vertex:gemini-2.5-flash",
+    # Bedrock popular
+    "bedrock:amazon.titan-tg1-large",
+    "bedrock:cohere.command-text-v14",
+]
