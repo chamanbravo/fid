@@ -1,28 +1,26 @@
-import asyncio
-import os
-import subprocess
-import sys
-
 import typer
-from rich.console import Console
-from rich.prompt import Prompt
 
-from . import __version__
-from .config import Config
-from .fid import Fid, run
-from .models import select_model
-
-console = Console()
-
-config = Config()
+from .commands import (
+    Dirs,
+    FidPrompt,
+    InteractiveMode,
+    ListRoles,
+    ResetConfig,
+    Role,
+    SelectModel,
+    Settings,
+    ShowVersion,
+)
 
 app = typer.Typer(
+    name="Fid",
     help="AI for the command line. Built for pipelines.",
     add_completion=False,
     context_settings={
         "help_option_names": ["-h", "--help"],
     },
     pretty_exceptions_show_locals=False,
+    rich_markup_mode="rich",
 )
 
 
@@ -59,62 +57,31 @@ def main(
         help=" Backup your old settings file and reset everything to the defaults",
     ),
 ):
-    if model:
-        select_model(config)
-    elif version:
-        console.print(f"Version: {__version__.__version__}")
-    elif reset_settings:
-        config.reset_config()
-        console.print("Config reset successfully.")
-    elif settings:
-        editor = os.environ.get("EDITOR", "vim")
-        try:
-            subprocess.run([editor, str(config.config_file)])
-        except FileNotFoundError:
-            console.print("[red reverse]ERROR:[/red reverse] Missing $EDITOR")
-            console.print(
-                f'[dim]exec: "{editor}": executable file not found in %PATH%[/dim]'
-            )
-            raise typer.Exit(1)
-    elif dirs:
-        console.print(f"[magenta]Configuration:[/magenta] {config.config_dir}")
-    elif list_roles:
-        roles = config.config.roles.keys()
-        console.print("\n".join(roles))
-    elif role:
-        prompt_str = " ".join(prompt)
-        stdin_data = None
-        if not sys.stdin.isatty():
-            stdin_data = sys.stdin.read().strip()
-
-        if stdin_data:
-            prompt_str = stdin_data + "\n" + prompt_str
-
-        fid_config = config.config
-        system_prompt = fid_config.roles.get(role, [])
-        fid = Fid(model=fid_config.default_model, system_prompt=system_prompt)
-        agent = fid.agent()
-        asyncio.run(run(prompt_str, agent))
-    elif prompt:
-        prompt_str = " ".join(prompt)
-        stdin_data = None
-        if not sys.stdin.isatty():
-            stdin_data = sys.stdin.read().strip()
-
-        if stdin_data:
-            prompt_str = stdin_data + "\n" + prompt_str
-
-        fid_config = config.config
-        fid = Fid(model=fid_config.default_model)
-        agent = fid.agent()
-        asyncio.run(run(prompt_str, agent))
-    else:
-        prompt_input = Prompt.ask("[magenta]Enter a prompt:[/magenta]\n")
-        fid_config = config.config
-        print()
-        fid = Fid(model=fid_config.default_model)
-        agent = fid.agent()
-        asyncio.run(run(prompt_input, agent))
+    try:
+        if model:
+            SelectModel().execute()
+        elif version:
+            ShowVersion().execute()
+        elif reset_settings:
+            ResetConfig().execute()
+        elif settings:
+            Settings().execute()
+        elif dirs:
+            Dirs().execute()
+        elif list_roles:
+            ListRoles().execute()
+        elif role:
+            Role(role=role, prompt=prompt).execute()
+        elif prompt:
+            FidPrompt(prompt).execute()
+        else:
+            InteractiveMode().execute()
+    except KeyboardInterrupt:
+        typer.echo("\nOperation cancelled by user.", err=True)
+        raise typer.Exit(130)
+    except Exception as e:
+        typer.echo(f"Error: {e}", err=True, color=True)
+        raise typer.Exit(1)
 
 
 if __name__ == "__main__":

@@ -1,17 +1,15 @@
 import asyncio
 
 import readchar
-from rich.console import Console
 from rich.live import Live
 from rich.prompt import Prompt
 from rich.table import Table
 
-from .config import Config
-from .fid import Fid, run
+from . import console
+from .fid import Fid
 
 
-def select_model(config: Config):
-    console = Console()
+def select_model():
     options = [
         "google-gla:gemini-2.0-flash",
         "google-gla:gemini-2.0-flash-lite",
@@ -45,11 +43,7 @@ def select_model(config: Config):
             live.update(get_menu_table())
 
     if selected_model:
-        config.config.default_model = selected_model
-
         prompt_input = Prompt.ask("\n[magenta]Enter a prompt:[/magenta]\n")
-        fid_config = config.config
-        fid = Fid(model=fid_config.default_model)
-        agent = fid.agent()
-        print()
-        asyncio.run(run(prompt_input, agent))
+        fid = Fid(model=selected_model)
+        console.print()
+        asyncio.run(fid.run(prompt_input))

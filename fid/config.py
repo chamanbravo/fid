@@ -58,7 +58,6 @@ class Config:
     def reset_config(self):
         try:
             with open(self.config_file, "w") as f:
-                print("here")
                 f.write(default_config_str)
         except Exception as e:
             print(f"Warning: Could not save config: {e}", file=sys.stderr)
