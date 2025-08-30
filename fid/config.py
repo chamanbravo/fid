@@ -1,8 +1,9 @@
-import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
+
+from . import console
 
 default_config_str = """\
 # Default model ('openai:chatgpt-4o-latest', 'openai:gpt-3.5-turbo',...)
@@ -48,9 +49,8 @@ class Config:
                     if hasattr(default_config, key):
                         setattr(default_config, key, value)
             except Exception as e:
-                print(f"Warning: Could not load config: {e}", file=sys.stderr)
+                console.print(f"Warning: Could not load config: {e}")
         else:
-            print("add")
             self.reset_config()
 
         return default_config
@@ -60,4 +60,4 @@ class Config:
             with open(self.config_file, "w") as f:
                 f.write(default_config_str)
         except Exception as e:
-            print(f"Warning: Could not save config: {e}", file=sys.stderr)
+            console.print(f"Warning: Could not save config: {e}")

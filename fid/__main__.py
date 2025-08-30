@@ -1,5 +1,6 @@
 import typer
 
+from . import console
 from .commands import (
     Dirs,
     FidPrompt,
@@ -77,10 +78,10 @@ def main(
         else:
             InteractiveMode().execute()
     except KeyboardInterrupt:
-        typer.echo("\nOperation cancelled by user.", err=True)
+        console.print("\n[gray62]Operation cancelled by user.[/gray62]")
         raise typer.Exit(130)
     except Exception as e:
-        typer.echo(f"Error: {e}", err=True, color=True)
+        console.print(f"[red reverse]Error[/red reverse]: {e}")
         raise typer.Exit(1)
 
 
