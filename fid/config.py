@@ -3,8 +3,6 @@ from pathlib import Path
 
 import yaml
 
-from . import console
-
 default_config_str = """\
 # Default model ('openai:chatgpt-4o-latest', 'openai:gpt-3.5-turbo',...)
 default-model: google-gla:gemini-2.0-flash
@@ -31,6 +29,9 @@ class Configs:
 
 class Config:
     def __init__(self):
+        from . import console
+
+        self.console = console
         self.config_dir = Path.home() / ".config" / "fid"
         self.config_file = self.config_dir / "config.yaml"
 
@@ -49,7 +50,7 @@ class Config:
                     if hasattr(default_config, key):
                         setattr(default_config, key, value)
             except Exception as e:
-                console.print(f"Warning: Could not load config: {e}")
+                self.console.print(f"Warning: Could not load config: {e}")
         else:
             self.reset_config()
 
@@ -60,4 +61,4 @@ class Config:
             with open(self.config_file, "w") as f:
                 f.write(default_config_str)
         except Exception as e:
-            console.print(f"Warning: Could not save config: {e}")
+            self.console.print(f"Warning: Could not save config: {e}")
