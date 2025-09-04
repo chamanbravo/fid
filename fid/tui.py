@@ -109,7 +109,8 @@ class FidTui(App[str]):
     def __init__(self, config: Configs):
         super().__init__()
         self.config = config
-        self.agent = Fid(model=config.default_model)
+        self.system_prompt = self.config.roles.get(self.config.role, [])
+        self.agent = Fid(model=config.default_model, system_prompt=self.system_prompt)
 
     def compose(self) -> ComposeResult:
         with Container(id="header"):
