@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.10"
 
 [[package]]
@@ -411,8 +411,8 @@ wheels = [
 
 [[package]]
 name = "fid"
-version = "0.1.4"
-source = { virtual = "." }
+version = "0.2.0"
+source = { editable = "." }
 dependencies = [
     { name = "pydantic-ai" },
     { name = "readchar" },
