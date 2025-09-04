@@ -1,7 +1,7 @@
 # Fid
 
 <p align="center">
-  <img src="./docs/fid.png" width="300px">
+  <img src="./docs/fid-tui.png">
 </p>
 
 <div align="center">
