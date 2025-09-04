@@ -5,11 +5,11 @@ import sys
 from abc import ABC, abstractmethod
 
 import typer
-from rich.prompt import Prompt
 
 from . import __version__, config, console
 from .fid import Fid
 from .models import select_model
+from .tui import FidTui
 
 
 class Command(ABC):
@@ -94,8 +94,6 @@ class FidPrompt(Command):
 
 class InteractiveMode(Command):
     def execute(self):
-        prompt_input = Prompt.ask("[magenta]Enter a prompt:[/magenta]\n")
         fid_config = config.config
-        console.print()
-        fid = Fid(model=fid_config.default_model)
-        asyncio.run(fid.run(prompt_input))
+        app = FidTui(fid_config)
+        app.run()
