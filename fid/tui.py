@@ -1,6 +1,7 @@
 import asyncio
 import os
 
+from pydantic_ai.messages import ModelMessagesTypeAdapter
 from textual.app import App, ComposeResult
 from textual.containers import Center, Container, Horizontal, Right
 from textual.reactive import reactive
@@ -105,6 +106,7 @@ class FidTui(App[str]):
 
     chat = reactive([])
     initialized = False
+    history = []
 
     def __init__(self, config: Configs):
         super().__init__()
@@ -168,28 +170,33 @@ class FidTui(App[str]):
 
             self.initialized = True
 
-        self.chat = [*self.chat, {"type": "user", "text": message.value}]
+        self.chat = [*self.chat, {"role": "user", "text": message.value}]
 
         input_widget = self.query_one("#input", Input)
         input_widget.value = ""
 
-        loading_label = {"type": "loading", "text": "Firing neurons..."}
+        loading_label = {"role": "loading", "text": "Firing neurons..."}
         self.chat = [*self.chat, loading_label]
 
         asyncio.create_task(self.update_chat(message.value))
 
     async def update_chat(self, message: str):
-        async with self.agent.agent.run_stream(message) as result:
+        async with self.agent.agent.run_stream(
+            message, message_history=self.history
+        ) as result:
             async for res_message in result.stream():
-                if self.chat and self.chat[-1]["type"] in ("loading", "ai"):
-                    self.chat = [*self.chat[:-1], {"type": "ai", "text": res_message}]
+                if self.chat and self.chat[-1]["role"] in ("loading", "ai"):
+                    self.chat = [*self.chat[:-1], {"role": "ai", "text": res_message}]
+
+            prev_messages = result.all_messages()
+            self.history = ModelMessagesTypeAdapter.validate_python(prev_messages)
 
     def watch_chat(self, chat: list[dict[str, str]]):
         chat_container = self.query_one("#chat", Container)
         msg = chat[-1] if len(chat) else {}
         node = chat_container.children[-1] if chat_container.children else None
         if msg:
-            msg_type = msg.get("type")
+            msg_type = msg.get("role")
             msg_text: str = msg.get("text") or ""
             if msg_type == "user":
                 chat_container.mount(Label(msg_text, classes="message"))
