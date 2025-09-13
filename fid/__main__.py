@@ -61,7 +61,7 @@ def main(
     try:
         if model:
             SelectModel().execute()
-        elif version:
+        if version:
             ShowVersion().execute()
         elif reset_settings:
             ResetConfig().execute()

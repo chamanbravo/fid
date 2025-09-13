@@ -1,4 +1,3 @@
-import asyncio
 import os
 import subprocess
 import sys
@@ -9,7 +8,6 @@ import typer
 from . import __version__, config, console
 from .fid import Fid
 from .models import select_model
-from .tui import FidTui
 
 
 class Command(ABC):
@@ -77,6 +75,8 @@ class ListRoles(Command):
 
 class Role(Command):
     def execute(self):
+        import asyncio
+
         prompt = self.prompt_builder()
         fid_config = config.config
         system_prompt = fid_config.roles.get(self.role, [])
@@ -86,6 +86,8 @@ class Role(Command):
 
 class FidPrompt(Command):
     def execute(self):
+        import asyncio
+
         prompt = self.prompt_builder()
         fid_config = config.config
         fid = Fid(model=fid_config.default_model)
@@ -94,6 +96,8 @@ class FidPrompt(Command):
 
 class InteractiveMode(Command):
     def execute(self):
+        from .tui import FidTui
+
         fid_config = config.config
         app = FidTui(fid_config)
         app.run()

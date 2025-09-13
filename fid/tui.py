@@ -154,7 +154,8 @@ class FidScreen(Screen[str]):
         asyncio.create_task(self.update_chat(message.value))
 
     async def update_chat(self, message: str):
-        async with self.app_ref.agent.agent.run_stream(
+        agent = await self.app_ref.get_agent()
+        async with agent.agent.run_stream(
             message, message_history=self.history
         ) as result:
             async for res_message in result.stream():
@@ -285,7 +286,22 @@ class FidTui(App[str]):
         super().__init__()
         self.config = config
         self.system_prompt = self.config.roles.get(self.config.role, [])
-        self.agent = Fid(model=config.default_model, system_prompt=self.system_prompt)
+        self.agent: Fid | None = None
 
     def on_mount(self):
         self.push_screen(FidScreen(self))
+        asyncio.create_task(self._init_agent())
+
+    async def _init_agent(self):
+        loop = asyncio.get_running_loop()
+        self.agent = await loop.run_in_executor(
+            None,
+            lambda: Fid(
+                model=self.config.default_model, system_prompt=self.system_prompt
+            ),
+        )
+
+    async def get_agent(self) -> Fid:
+        while self.agent is None:
+            await asyncio.sleep(0.05)
+        return self.agent

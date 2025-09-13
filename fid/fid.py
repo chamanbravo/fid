@@ -1,7 +1,6 @@
 import random
 
 import typer
-from pydantic_ai import Agent, UserError
 from rich.live import Live
 from rich.markdown import Markdown
 from rich.spinner import Spinner
@@ -17,6 +16,8 @@ class Fid:
         self.agent = self._create_agent()
 
     def _create_agent(self):
+        from pydantic_ai import Agent, UserError
+
         try:
             return Agent(model=self.model, system_prompt=self.system_prompt)
         except UserError as e:
