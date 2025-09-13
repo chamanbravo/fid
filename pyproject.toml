@@ -29,6 +29,9 @@ classifiers = [
 [project.scripts]
 fid = "fid.__main__:app"
 
+[project.optional-dependencies]
+pre-commit = ["pre-commit"]
+
 [project.urls]
 Homepage = "https://github.com/chamanbravo/fid"
 Repository = "https://github.com/chamanbravo/fid"
